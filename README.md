@@ -19,11 +19,11 @@
 ## Screenshots
 
 <div style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 10px;">
-  <img src="https://github.com/user-attachments/assets/2261a11e-0691-45cb-9c22-e33a7f4ac13f" width="200" />
-  <img src="https://github.com/user-attachments/assets/e25e677d-8212-4b0a-81c9-560fcef9c78d" width="200" />
-  <img src="https://github.com/user-attachments/assets/19d90a16-335e-4b0e-a9c6-74ca48ac31e7" width="200" />
-  <img src="https://github.com/user-attachments/assets/1330a9a0-2e3b-48b7-be5a-945baab4024c" width="200" />
-  <img src="https://github.com/user-attachments/assets/f1cbad72-a8c7-416f-a30f-d5163a3552ba" width="200" />
+  <img src="https://github.com/user-attachments/assets/2261a11e-0691-45cb-9c22-e33a7f4ac13f" width="300" />
+  <img src="https://github.com/user-attachments/assets/e25e677d-8212-4b0a-81c9-560fcef9c78d" width="300" />
+  <img src="https://github.com/user-attachments/assets/19d90a16-335e-4b0e-a9c6-74ca48ac31e7" width="300" />
+  <img src="https://github.com/user-attachments/assets/1330a9a0-2e3b-48b7-be5a-945baab4024c" width="300" />
+  <img src="https://github.com/user-attachments/assets/f1cbad72-a8c7-416f-a30f-d5163a3552ba" width="300" />
 </div>
 
 ## Tecnologias Utilizadas
@@ -179,15 +179,13 @@ This app allows users to search for words, view their meanings, save favorites, 
 
 ## Screenshots
 
-![image](https://github.com/user-attachments/assets/2261a11e-0691-45cb-9c22-e33a7f4ac13f)
-
-![image](https://github.com/user-attachments/assets/e25e677d-8212-4b0a-81c9-560fcef9c78d)
-
-![image](https://github.com/user-attachments/assets/19d90a16-335e-4b0e-a9c6-74ca48ac31e7)
-
-![image](https://github.com/user-attachments/assets/1330a9a0-2e3b-48b7-be5a-945baab4024c)
-
-![image](https://github.com/user-attachments/assets/f1cbad72-a8c7-416f-a30f-d5163a3552ba)
+<div style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 10px;">
+  <img src="https://github.com/user-attachments/assets/2261a11e-0691-45cb-9c22-e33a7f4ac13f" width="300" />
+  <img src="https://github.com/user-attachments/assets/e25e677d-8212-4b0a-81c9-560fcef9c78d" width="300" />
+  <img src="https://github.com/user-attachments/assets/19d90a16-335e-4b0e-a9c6-74ca48ac31e7" width="300" />
+  <img src="https://github.com/user-attachments/assets/1330a9a0-2e3b-48b7-be5a-945baab4024c" width="300" />
+  <img src="https://github.com/user-attachments/assets/f1cbad72-a8c7-416f-a30f-d5163a3552ba" width="300" />
+</div>
 
 ## Technologies Used
 
