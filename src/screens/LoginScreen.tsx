@@ -16,6 +16,7 @@ import { theme } from "../theme";
 import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
 import { StorageService } from "../services/storage";
+import { useNavigation } from "@react-navigation/native";
 
 /**
  * Login screen component
@@ -26,6 +27,7 @@ export const LoginScreen: React.FC = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
+  const navigation = useNavigation();
 
   const handleLogin = async () => {
     if (!email.trim()) {
@@ -57,6 +59,11 @@ export const LoginScreen: React.FC = () => {
     await StorageService.saveLanguage(newLang);
   };
 
+  // Handle back button press
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -65,6 +72,15 @@ export const LoginScreen: React.FC = () => {
     >
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.header}>
+          <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+            <MaterialIcons
+              name="arrow-back"
+              size={24}
+              color={theme.colors.primary}
+            />
+            <Text style={styles.backButtonText}>{t("common.back")}</Text>
+          </TouchableOpacity>
+
           <MaterialIcons name="book" size={64} color={theme.colors.primary} />
           <Text style={styles.title}>{t("home.title")}</Text>
           <Text style={styles.subtitle}>{t("login.title")}</Text>
@@ -146,6 +162,20 @@ const styles = StyleSheet.create({
   header: {
     alignItems: "center",
     marginBottom: theme.spacing.xxl,
+  },
+  backButton: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    flexDirection: "row",
+    alignItems: "center",
+    padding: theme.spacing.sm,
+  },
+  backButtonText: {
+    marginLeft: theme.spacing.xs,
+    color: theme.colors.primary,
+    fontSize: theme.typography.fontSize.md,
+    fontWeight: "bold",
   },
   title: {
     fontSize: theme.typography.fontSize.xxxl,
