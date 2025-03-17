@@ -13,6 +13,9 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 import { useApp } from "../contexts/AppContext";
 import { theme } from "../theme";
+import { useTranslation } from "react-i18next";
+import i18n from "../i18n";
+import { StorageService } from "../services/storage";
 
 /**
  * Login screen component
@@ -22,15 +25,16 @@ export const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation();
 
   const handleLogin = async () => {
     if (!email.trim()) {
-      Alert.alert("Error", "Please enter your email");
+      Alert.alert(t("common.error"), t("login.email"));
       return;
     }
 
     if (!password.trim()) {
-      Alert.alert("Error", "Please enter your password");
+      Alert.alert(t("common.error"), t("login.password"));
       return;
     }
 
@@ -38,14 +42,19 @@ export const LoginScreen: React.FC = () => {
       setIsLoading(true);
       await login(email, password);
     } catch (error) {
-      Alert.alert(
-        "Login Failed",
-        "An error occurred during login. Please try again."
-      );
+      Alert.alert(t("login.loginError"), t("login.loginError"));
       console.error("Login error:", error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Toggle language
+  const toggleLanguage = async () => {
+    const currentLang = i18n.language;
+    const newLang = currentLang === "pt" ? "en" : "pt";
+    await i18n.changeLanguage(newLang);
+    await StorageService.saveLanguage(newLang);
   };
 
   return (
@@ -57,10 +66,19 @@ export const LoginScreen: React.FC = () => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.header}>
           <MaterialIcons name="book" size={64} color={theme.colors.primary} />
-          <Text style={styles.title}>English Dictionary</Text>
-          <Text style={styles.subtitle}>
-            Sign in to sync your favorites and history
-          </Text>
+          <Text style={styles.title}>{t("home.title")}</Text>
+          <Text style={styles.subtitle}>{t("login.title")}</Text>
+          <TouchableOpacity
+            style={styles.languageButton}
+            onPress={toggleLanguage}
+          >
+            <MaterialIcons
+              name="language"
+              size={24}
+              color={theme.colors.info}
+            />
+            <Text style={styles.langText}>{i18n.language.toUpperCase()}</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.form}>
@@ -177,6 +195,18 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: theme.typography.fontSize.lg,
+    fontWeight: "bold",
+  },
+  languageButton: {
+    padding: theme.spacing.xs,
+    alignItems: "center",
+    alignSelf: "flex-end",
+    marginTop: theme.spacing.sm,
+  },
+  langText: {
+    fontSize: 10,
+    marginTop: 2,
+    color: theme.colors.info,
     fontWeight: "bold",
   },
 });

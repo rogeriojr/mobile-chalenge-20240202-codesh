@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -7,18 +7,25 @@ import {
   TouchableOpacity,
   Platform,
   Linking,
-} from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Audio } from 'expo-av';
-import { LoadingIndicator } from '../components/LoadingIndicator';
-import { useApp } from '../contexts/AppContext';
-import { theme } from '../theme';
-import { RootStackParamList } from '../navigation/types';
+} from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { RouteProp, useRoute, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { Audio } from "expo-av";
+import { AVPlaybackStatus } from "expo-av/build/AV";
+import { LoadingIndicator } from "../components/LoadingIndicator";
+import { useApp } from "../contexts/AppContext";
+import { theme } from "../theme";
+import { RootStackParamList } from "../navigation/types";
+import { useTranslation } from "react-i18next";
+import i18n from "../i18n";
+import { StorageService } from "../services/storage";
 
-type WordDetailsScreenRouteProp = RouteProp<RootStackParamList, 'WordDetails'>;
-type WordDetailsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'WordDetails'>;
+type WordDetailsScreenRouteProp = RouteProp<RootStackParamList, "WordDetails">;
+type WordDetailsScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "WordDetails"
+>;
 
 /**
  * Word details screen component
@@ -27,14 +34,15 @@ export const WordDetailsScreen: React.FC = () => {
   const route = useRoute<WordDetailsScreenRouteProp>();
   const navigation = useNavigation<WordDetailsScreenNavigationProp>();
   const { word } = route.params;
-  
-  const { 
-    currentWord, 
-    wordDefinition, 
-    isLoading, 
-    error, 
-    isFavorite, 
-    addFavorite, 
+  const { t } = useTranslation();
+
+  const {
+    currentWord,
+    wordDefinition,
+    isLoading,
+    error,
+    isFavorite,
+    addFavorite,
     removeFavorite,
     searchWord,
   } = useApp();
@@ -54,8 +62,10 @@ export const WordDetailsScreen: React.FC = () => {
   useEffect(() => {
     if (wordDefinition && wordDefinition.length > 0) {
       const phonetics = wordDefinition[0].phonetics || [];
-      const audioPhonetic = phonetics.find(p => p.audio && p.audio.trim() !== '');
-      
+      const audioPhonetic = phonetics.find(
+        (p) => p.audio && p.audio.trim() !== ""
+      );
+
       if (audioPhonetic && audioPhonetic.audio) {
         setAudioUrl(audioPhonetic.audio);
       } else {
@@ -88,18 +98,18 @@ export const WordDetailsScreen: React.FC = () => {
         { uri: audioUrl },
         { shouldPlay: true }
       );
-      
+
       setSound(newSound);
       setIsPlaying(true);
-      
+
       // Listen for playback status
-      newSound.setOnPlaybackStatusUpdate((status: Audio.AVPlaybackStatus) => {
+      newSound.setOnPlaybackStatusUpdate((status: AVPlaybackStatus) => {
         if (status.isLoaded && !status.isPlaying && status.didJustFinish) {
           setIsPlaying(false);
         }
       });
     } catch (error) {
-      console.error('Error playing pronunciation:', error);
+      console.error("Error playing pronunciation:", error);
       setIsPlaying(false);
     }
   };
@@ -115,20 +125,37 @@ export const WordDetailsScreen: React.FC = () => {
 
   // Open source URL
   const openSourceUrl = (url: string) => {
-    Linking.openURL(url).catch((err) => console.error('Error opening URL:', err));
+    Linking.openURL(url).catch((err) =>
+      console.error("Error opening URL:", err)
+    );
+  };
+
+  // Toggle language
+  const toggleLanguage = async () => {
+    const currentLang = i18n.language;
+    const newLang = currentLang === "pt" ? "en" : "pt";
+    await i18n.changeLanguage(newLang);
+    await StorageService.saveLanguage(newLang);
   };
 
   if (isLoading) {
-    return <LoadingIndicator message="Loading word details..." />;
+    return <LoadingIndicator message={t("wordDetails.loadingDetails")} />;
   }
 
   if (error) {
     return (
       <View style={styles.errorContainer}>
-        <MaterialIcons name="error-outline" size={64} color={theme.colors.error} />
+        <MaterialIcons
+          name="error-outline"
+          size={64}
+          color={theme.colors.error}
+        />
         <Text style={styles.errorText}>{error}</Text>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
-          <Text style={styles.buttonText}>Go Back</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.buttonText}>{t("common.goBack")}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -137,10 +164,19 @@ export const WordDetailsScreen: React.FC = () => {
   if (!wordDefinition || wordDefinition.length === 0) {
     return (
       <View style={styles.errorContainer}>
-        <MaterialIcons name="help-outline" size={64} color={theme.colors.warning} />
-        <Text style={styles.errorText}>No definition found for "{word}"</Text>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.goBack()}>
-          <Text style={styles.buttonText}>Go Back</Text>
+        <MaterialIcons
+          name="help-outline"
+          size={64}
+          color={theme.colors.warning}
+        />
+        <Text style={styles.errorText}>
+          {t("wordDetails.noDefinition", { word })}
+        </Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.buttonText}>{t("common.goBack")}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -151,41 +187,66 @@ export const WordDetailsScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity 
-          style={styles.backButton} 
+        <TouchableOpacity
+          style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <MaterialIcons name="arrow-back" size={24} color={theme.colors.text} />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>{word}</Text>
-        <TouchableOpacity 
-          style={styles.favoriteButton} 
-          onPress={handleToggleFavorite}
-        >
-          <MaterialIcons 
-            name={isFavorite(word) ? "favorite" : "favorite-border"} 
-            size={24} 
-            color={isFavorite(word) ? theme.colors.favorite : theme.colors.text} 
+          <MaterialIcons
+            name="arrow-back"
+            size={24}
+            color={theme.colors.text}
           />
         </TouchableOpacity>
+        <Text style={styles.headerTitle}>{word}</Text>
+        <View style={styles.headerRightButtons}>
+          <TouchableOpacity
+            style={styles.languageButton}
+            onPress={toggleLanguage}
+          >
+            <MaterialIcons
+              name="language"
+              size={24}
+              color={theme.colors.info}
+            />
+            <Text style={styles.langText}>{i18n.language.toUpperCase()}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.favoriteButton}
+            onPress={handleToggleFavorite}
+          >
+            <MaterialIcons
+              name={isFavorite(word) ? "favorite" : "favorite-border"}
+              size={24}
+              color={
+                isFavorite(word) ? theme.colors.favorite : theme.colors.text
+              }
+            />
+          </TouchableOpacity>
+        </View>
       </View>
 
-      <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
+      <ScrollView
+        style={styles.content}
+        contentContainerStyle={styles.contentContainer}
+      >
         <View style={styles.wordSection}>
           <Text style={styles.wordTitle}>{definition.word}</Text>
           {definition.phonetic && (
             <View style={styles.phoneticContainer}>
               <Text style={styles.phonetic}>{definition.phonetic}</Text>
               {audioUrl && (
-                <TouchableOpacity 
-                  style={[styles.audioButton, isPlaying && styles.audioButtonPlaying]} 
+                <TouchableOpacity
+                  style={[
+                    styles.audioButton,
+                    isPlaying && styles.audioButtonPlaying,
+                  ]}
                   onPress={playPronunciation}
                   disabled={isPlaying}
                 >
-                  <MaterialIcons 
-                    name={isPlaying ? "volume-up" : "volume-up"} 
-                    size={20} 
-                    color={isPlaying ? theme.colors.primary : theme.colors.text} 
+                  <MaterialIcons
+                    name={isPlaying ? "volume-up" : "volume-up"}
+                    size={20}
+                    color={isPlaying ? theme.colors.primary : theme.colors.text}
                   />
                 </TouchableOpacity>
               )}
@@ -194,51 +255,70 @@ export const WordDetailsScreen: React.FC = () => {
         </View>
 
         {definition.meanings.map((meaning, index) => (
-          <View key={`${meaning.partOfSpeech}-${index}`} style={styles.meaningSection}>
+          <View
+            key={`${meaning.partOfSpeech}-${index}`}
+            style={styles.meaningSection}
+          >
             <Text style={styles.partOfSpeech}>{meaning.partOfSpeech}</Text>
-            
-            <Text style={styles.sectionTitle}>Definitions:</Text>
+
+            <Text style={styles.sectionTitle}>
+              {t("wordDetails.definitions")}
+            </Text>
             {meaning.definitions.map((def, defIndex) => (
               <View key={`def-${defIndex}`} style={styles.definitionItem}>
                 <Text style={styles.definitionNumber}>{defIndex + 1}.</Text>
                 <View style={styles.definitionContent}>
                   <Text style={styles.definition}>{def.definition}</Text>
-                  
+
                   {def.example && (
                     <Text style={styles.example}>
-                      <Text style={styles.exampleLabel}>Example: </Text>
+                      <Text style={styles.exampleLabel}>
+                        {t("wordDetails.example")}{" "}
+                      </Text>
                       {def.example}
                     </Text>
                   )}
-                  
+
                   {def.synonyms.length > 0 && (
                     <Text style={styles.synonyms}>
-                      <Text style={styles.synonymsLabel}>Synonyms: </Text>
-                      {def.synonyms.join(', ')}
+                      <Text style={styles.synonymsLabel}>
+                        {t("wordDetails.synonyms")}{" "}
+                      </Text>
+                      {def.synonyms.join(", ")}
                     </Text>
                   )}
-                  
+
                   {def.antonyms.length > 0 && (
                     <Text style={styles.antonyms}>
-                      <Text style={styles.antonymsLabel}>Antonyms: </Text>
-                      {def.antonyms.join(', ')}
+                      <Text style={styles.antonymsLabel}>
+                        {t("wordDetails.antonyms")}{" "}
+                      </Text>
+                      {def.antonyms.join(", ")}
                     </Text>
                   )}
                 </View>
               </View>
             ))}
-            
+
             {meaning.synonyms.length > 0 && (
               <View style={styles.synonymsSection}>
-                <Text style={styles.sectionTitle}>Synonyms:</Text>
-                <Text style={styles.synonymsList}>{meaning.synonyms.join(', ')}</Text>
+                <Text style={styles.sectionTitle}>
+                  {t("wordDetails.synonyms")}
+                </Text>
+                <Text style={styles.synonymsList}>
+                  {meaning.synonyms.join(", ")}
+                </Text>
               </View>
             )}
-            
+
             {meaning.antonyms.length > 0 && (
               <View style={styles.antonymsSection}>
-                <Text style={styles.sectionTitle}>Antonyms:</Text>
-                <Text style={styles.antonymsList}>{meaning.antonyms.join(', ')}</Text>
+                <Text style={styles.sectionTitle}>
+                  {t("wordDetails.antonyms")}
+                </Text>
+                <Text style={styles.antonymsList}>
+                  {meaning.antonyms.join(", ")}
+                </Text>
               </View>
             )}
           </View>
@@ -246,15 +326,21 @@ export const WordDetailsScreen: React.FC = () => {
 
         {definition.sourceUrls && definition.sourceUrls.length > 0 && (
           <View style={styles.sourceSection}>
-            <Text style={styles.sectionTitle}>Source:</Text>
+            <Text style={styles.sectionTitle}>{t("wordDetails.source")}</Text>
             {definition.sourceUrls.map((url, index) => (
-              <TouchableOpacity 
-                key={`source-${index}`} 
+              <TouchableOpacity
+                key={`source-${index}`}
                 onPress={() => openSourceUrl(url)}
                 style={styles.sourceLink}
               >
-                <Text style={styles.sourceLinkText} numberOfLines={1}>{url}</Text>
-                <MaterialIcons name="open-in-new" size={16} color={theme.colors.primary} />
+                <Text style={styles.sourceLinkText} numberOfLines={1}>
+                  {url}
+                </Text>
+                <MaterialIcons
+                  name="open-in-new"
+                  size={16}
+                  color={theme.colors.primary}
+                />
               </TouchableOpacity>
             ))}
           </View>
@@ -270,10 +356,10 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.background,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: theme.spacing.md,
-    paddingTop: Platform.OS === 'ios' ? theme.spacing.xl : theme.spacing.lg,
+    paddingTop: Platform.OS === "ios" ? theme.spacing.xl : theme.spacing.lg,
     paddingBottom: theme.spacing.md,
     backgroundColor: theme.colors.surface,
     ...theme.shadows.small,
@@ -284,13 +370,28 @@ const styles = StyleSheet.create({
   headerTitle: {
     flex: 1,
     fontSize: theme.typography.fontSize.lg,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: theme.colors.text,
     marginLeft: theme.spacing.sm,
-    textAlign: 'center',
+    textAlign: "center",
   },
   favoriteButton: {
     padding: theme.spacing.xs,
+  },
+  headerRightButtons: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  languageButton: {
+    padding: theme.spacing.xs,
+    marginRight: theme.spacing.xs,
+    alignItems: "center",
+  },
+  langText: {
+    fontSize: 10,
+    marginTop: 2,
+    color: theme.colors.info,
+    fontWeight: "bold",
   },
   content: {
     flex: 1,
@@ -303,18 +404,18 @@ const styles = StyleSheet.create({
   },
   wordTitle: {
     fontSize: theme.typography.fontSize.xxl,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: theme.colors.text,
   },
   phoneticContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: theme.spacing.xs,
   },
   phonetic: {
     fontSize: theme.typography.fontSize.md,
     color: theme.colors.textSecondary,
-    fontStyle: 'italic',
+    fontStyle: "italic",
   },
   audioButton: {
     marginLeft: theme.spacing.sm,
@@ -324,7 +425,7 @@ const styles = StyleSheet.create({
     ...theme.shadows.small,
   },
   audioButtonPlaying: {
-    backgroundColor: theme.colors.secondary + '20',
+    backgroundColor: theme.colors.secondary + "20",
   },
   meaningSection: {
     marginBottom: theme.spacing.xl,
@@ -335,24 +436,24 @@ const styles = StyleSheet.create({
   },
   partOfSpeech: {
     fontSize: theme.typography.fontSize.lg,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: theme.colors.primary,
     marginBottom: theme.spacing.md,
-    fontStyle: 'italic',
+    fontStyle: "italic",
   },
   sectionTitle: {
     fontSize: theme.typography.fontSize.md,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: theme.colors.text,
     marginBottom: theme.spacing.sm,
   },
   definitionItem: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: theme.spacing.md,
   },
   definitionNumber: {
     fontSize: theme.typography.fontSize.md,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: theme.colors.primary,
     marginRight: theme.spacing.xs,
     width: 20,
@@ -369,11 +470,11 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.fontSize.sm,
     color: theme.colors.textSecondary,
     marginTop: theme.spacing.xs,
-    fontStyle: 'italic',
+    fontStyle: "italic",
   },
   exampleLabel: {
-    fontWeight: 'bold',
-    fontStyle: 'normal',
+    fontWeight: "bold",
+    fontStyle: "normal",
   },
   synonyms: {
     fontSize: theme.typography.fontSize.sm,
@@ -381,7 +482,7 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.xs,
   },
   synonymsLabel: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   antonyms: {
     fontSize: theme.typography.fontSize.sm,
@@ -389,7 +490,7 @@ const styles = StyleSheet.create({
     marginTop: theme.spacing.xs,
   },
   antonymsLabel: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   synonymsSection: {
     marginTop: theme.spacing.md,
@@ -412,8 +513,8 @@ const styles = StyleSheet.create({
     borderTopColor: theme.colors.divider,
   },
   sourceLink: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: theme.spacing.xs,
   },
   sourceLinkText: {
@@ -424,14 +525,14 @@ const styles = StyleSheet.create({
   },
   errorContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: theme.spacing.xl,
   },
   errorText: {
     fontSize: theme.typography.fontSize.lg,
     color: theme.colors.textSecondary,
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: theme.spacing.md,
     marginBottom: theme.spacing.lg,
   },
@@ -443,7 +544,8 @@ const styles = StyleSheet.create({
     ...theme.shadows.small,
   },
   buttonText: {
-    color: 'white',
+    color: "white",
     fontSize: theme.typography.fontSize.md,
-    fontWeight: 'bold',
-  }
+    fontWeight: "bold",
+  },
+});

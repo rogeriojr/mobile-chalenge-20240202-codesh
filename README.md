@@ -80,19 +80,19 @@ git clone https://github.com/yourusername/english-dictionary-app.git
 cd english-dictionary-app
 ```
 
-2. Install dependencies
+1. Install dependencies
 
 ```bash
 npm install
 ```
 
-3. Start the development server
+1. Start the development server
 
 ```bash
 npm start
 ```
 
-4. Run on a device or emulator
+1. Run on a device or emulator
 
 ```bash
 # For Android
@@ -128,7 +128,7 @@ The app caches previously viewed words and their definitions for offline access.
 
 ## Portuguese Version
 
-# Aplicativo de Dicionário Inglês
+## Aplicativo de Dicionário Inglês
 
 > Um aplicativo móvel para explorar palavras em inglês, suas definições e pronúncias com favoritos e histórico de visualização.
 
@@ -195,19 +195,19 @@ git clone https://github.com/yourusername/english-dictionary-app.git
 cd english-dictionary-app
 ```
 
-2. Instale as dependências
+1. Instale as dependências
 
 ```bash
 npm install
 ```
 
-3. Inicie o servidor de desenvolvimento
+1. Inicie o servidor de desenvolvimento
 
 ```bash
 npm start
 ```
 
-4. Execute em um dispositivo ou emulador
+1. Execute em um dispositivo ou emulador
 
 ```bash
 # Para Android
@@ -243,7 +243,7 @@ O aplicativo armazena em cache palavras e suas definições visualizadas anterio
 
 ## Original Project Challenge
 
-# Mobile Challenge 20240202
+## Mobile Challenge 20240202
 
 ## Introdução
 

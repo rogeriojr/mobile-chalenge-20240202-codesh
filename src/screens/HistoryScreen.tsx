@@ -15,6 +15,9 @@ import { LoadingIndicator } from "../components/LoadingIndicator";
 import { useApp } from "../contexts/AppContext";
 import { theme } from "../theme";
 import { RootStackParamList } from "../navigation/types";
+import { useTranslation } from "react-i18next";
+import i18n from "../i18n";
+import { StorageService } from "../services/storage";
 
 type HistoryScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -35,6 +38,7 @@ export const HistoryScreen: React.FC = () => {
     searchWord,
     isLoading,
   } = useApp();
+  const { t } = useTranslation();
 
   // Handle word selection
   const handleWordPress = (word: string) => {
@@ -51,6 +55,14 @@ export const HistoryScreen: React.FC = () => {
     }
   };
 
+  // Toggle language
+  const toggleLanguage = async () => {
+    const currentLang = i18n.language;
+    const newLang = currentLang === "pt" ? "en" : "pt";
+    await i18n.changeLanguage(newLang);
+    await StorageService.saveLanguage(newLang);
+  };
+
   // Render empty component for FlatList
   const renderEmpty = () => {
     return (
@@ -60,14 +72,14 @@ export const HistoryScreen: React.FC = () => {
           size={64}
           color={theme.colors.textSecondary}
         />
-        <Text style={styles.emptyText}>No viewed words yet</Text>
-        <Text style={styles.emptySubtext}>Words you view will appear here</Text>
+        <Text style={styles.emptyText}>{t("history.noHistory")}</Text>
+        <Text style={styles.emptySubtext}>{t("history.searchSome")}</Text>
       </View>
     );
   };
 
   if (isLoading) {
-    return <LoadingIndicator message="Loading history..." />;
+    return <LoadingIndicator message={t("common.loading")} />;
   }
 
   return (
@@ -83,12 +95,29 @@ export const HistoryScreen: React.FC = () => {
             color={theme.colors.text}
           />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>History</Text>
-        {history.length > 0 && (
-          <TouchableOpacity style={styles.clearButton} onPress={clearHistory}>
-            <MaterialIcons name="delete" size={24} color={theme.colors.error} />
+        <Text style={styles.headerTitle}>{t("history.title")}</Text>
+        <View style={styles.headerRightButtons}>
+          <TouchableOpacity
+            style={styles.languageButton}
+            onPress={toggleLanguage}
+          >
+            <MaterialIcons
+              name="language"
+              size={24}
+              color={theme.colors.info}
+            />
+            <Text style={styles.langText}>{i18n.language.toUpperCase()}</Text>
           </TouchableOpacity>
-        )}
+          {history.length > 0 && (
+            <TouchableOpacity style={styles.clearButton} onPress={clearHistory}>
+              <MaterialIcons
+                name="delete"
+                size={24}
+                color={theme.colors.error}
+              />
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
 
       <FlatList
@@ -136,6 +165,21 @@ const styles = StyleSheet.create({
   },
   clearButton: {
     padding: theme.spacing.xs,
+  },
+  headerRightButtons: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  languageButton: {
+    padding: theme.spacing.xs,
+    marginRight: theme.spacing.xs,
+    alignItems: "center",
+  },
+  langText: {
+    fontSize: 10,
+    marginTop: 2,
+    color: theme.colors.info,
+    fontWeight: "bold",
   },
   listContent: {
     padding: theme.spacing.sm,

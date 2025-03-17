@@ -18,6 +18,9 @@ import { useApp } from "../contexts/AppContext";
 import { WordsService } from "../services/words";
 import { theme } from "../theme";
 import { RootStackParamList } from "../navigation/types";
+import { useTranslation } from "react-i18next";
+import i18n from "../i18n";
+import { StorageService } from "../services/storage";
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -31,6 +34,7 @@ export const HomeScreen: React.FC = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const { searchWord, isFavorite, addFavorite, removeFavorite, isLoggedIn } =
     useApp();
+  const { t } = useTranslation();
 
   const [words, setWords] = useState<string[]>([]);
   const [filteredWords, setFilteredWords] = useState<string[]>([]);
@@ -158,6 +162,14 @@ export const HomeScreen: React.FC = () => {
     navigation.navigate("Login");
   };
 
+  // Toggle language
+  const toggleLanguage = async () => {
+    const currentLang = i18n.language;
+    const newLang = currentLang === "pt" ? "en" : "pt";
+    await i18n.changeLanguage(newLang);
+    await StorageService.saveLanguage(newLang);
+  };
+
   // Render footer for FlatList
   const renderFooter = () => {
     if (!isLoadingMore) return null;
@@ -165,7 +177,7 @@ export const HomeScreen: React.FC = () => {
     return (
       <View style={styles.footerLoader}>
         <ActivityIndicator size="small" color={theme.colors.primary} />
-        <Text style={styles.footerText}>Loading more words...</Text>
+        <Text style={styles.footerText}>{t("home.loadingMore")}</Text>
       </View>
     );
   };
@@ -182,23 +194,29 @@ export const HomeScreen: React.FC = () => {
           color={theme.colors.textSecondary}
         />
         <Text style={styles.emptyText}>
-          {searchQuery
-            ? "No words found matching your search"
-            : "No words available"}
+          {searchQuery ? t("home.noWordsFound") : t("home.noWordsAvailable")}
         </Text>
       </View>
     );
   };
 
   if (isLoading && !isLoadingMore && !isRefreshing) {
-    return <LoadingIndicator message="Loading dictionary..." />;
+    return <LoadingIndicator message={t("home.loadingDictionary")} />;
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>English Dictionary</Text>
+        <Text style={styles.title}>{t("home.title")}</Text>
         <View style={styles.headerButtons}>
+          <TouchableOpacity style={styles.iconButton} onPress={toggleLanguage}>
+            <MaterialIcons
+              name="language"
+              size={24}
+              color={theme.colors.info}
+            />
+            <Text style={styles.langText}>{i18n.language.toUpperCase()}</Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={styles.iconButton}
             onPress={navigateToHistory}
@@ -225,7 +243,11 @@ export const HomeScreen: React.FC = () => {
         </View>
       </View>
 
-      <SearchBar onSearch={setSearchQuery} initialValue={searchQuery} />
+      <SearchBar
+        onSearch={setSearchQuery}
+        initialValue={searchQuery}
+        placeholder={t("common.search")}
+      />
 
       <FlatList
         data={filteredWords}
@@ -276,6 +298,12 @@ const styles = StyleSheet.create({
   },
   headerButtons: {
     flexDirection: "row",
+  },
+  langText: {
+    fontSize: 10,
+    marginTop: 2,
+    color: theme.colors.info,
+    fontWeight: "bold",
   },
   iconButton: {
     padding: theme.spacing.sm,

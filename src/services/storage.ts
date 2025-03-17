@@ -1,76 +1,94 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// Storage keys
-const STORAGE_PREFIX = '@dictionary_app:';
-const FAVORITES_KEY = `${STORAGE_PREFIX}favorites`;
-const HISTORY_KEY = `${STORAGE_PREFIX}history`;
-const USER_KEY = `${STORAGE_PREFIX}user`;
+const STORAGE_KEYS = {
+  USER: "@dictionary:user",
+  FAVORITES: "@dictionary:favorites",
+  HISTORY: "@dictionary:history",
+  LANGUAGE: "@dictionary:language",
+};
 
-/**
- * Service for handling local storage operations
- */
-export class StorageService {
+export const StorageService = {
+  // Language methods
+  saveLanguage: async (language: string): Promise<void> => {
+    try {
+      await AsyncStorage.setItem(STORAGE_KEYS.LANGUAGE, language);
+    } catch (error) {
+      console.error("Error saving language:", error);
+      throw error;
+    }
+  },
+
+  getLanguage: async (): Promise<string | null> => {
+    try {
+      return await AsyncStorage.getItem(STORAGE_KEYS.LANGUAGE);
+    } catch (error) {
+      console.error("Error getting language:", error);
+      return null;
+    }
+  },
+
+  // User methods
   /**
    * Get favorites from storage
    * @param userId Optional user ID for user-specific favorites
    * @returns Promise with array of favorite words
    */
-  static async getFavorites(userId?: string): Promise<string[]> {
+  getFavorites: async (userId?: string): Promise<string[]> => {
     try {
-      const key = userId ? `${FAVORITES_KEY}_${userId}` : FAVORITES_KEY;
+      const key = userId ? `${STORAGE_KEYS.FAVORITES}_${userId}` : STORAGE_KEYS.FAVORITES;
       const data = await AsyncStorage.getItem(key);
       return data ? JSON.parse(data) : [];
     } catch (error) {
       console.error('Error getting favorites:', error);
       return [];
     }
-  }
+  },
 
   /**
    * Save favorites to storage
    * @param favorites Array of favorite words
    * @param userId Optional user ID for user-specific favorites
    */
-  static async saveFavorites(favorites: string[], userId?: string): Promise<void> {
+  saveFavorites: async (favorites: string[], userId?: string): Promise<void> => {
     try {
-      const key = userId ? `${FAVORITES_KEY}_${userId}` : FAVORITES_KEY;
+      const key = userId ? `${STORAGE_KEYS.FAVORITES}_${userId}` : STORAGE_KEYS.FAVORITES;
       await AsyncStorage.setItem(key, JSON.stringify(favorites));
     } catch (error) {
       console.error('Error saving favorites:', error);
     }
-  }
+  },
 
   /**
    * Add word to favorites
    * @param word Word to add to favorites
    * @param userId Optional user ID for user-specific favorites
    */
-  static async addFavorite(word: string, userId?: string): Promise<void> {
+  addFavorite: async (word: string, userId?: string): Promise<void> => {
     try {
-      const favorites = await this.getFavorites(userId);
+      const favorites = await StorageService.getFavorites(userId);
       if (!favorites.includes(word)) {
         favorites.push(word);
-        await this.saveFavorites(favorites, userId);
+        await StorageService.saveFavorites(favorites, userId);
       }
     } catch (error) {
       console.error('Error adding favorite:', error);
     }
-  }
+  },
 
   /**
    * Remove word from favorites
    * @param word Word to remove from favorites
    * @param userId Optional user ID for user-specific favorites
    */
-  static async removeFavorite(word: string, userId?: string): Promise<void> {
+  removeFavorite: async (word: string, userId?: string): Promise<void> => {
     try {
-      const favorites = await this.getFavorites(userId);
+      const favorites = await StorageService.getFavorites(userId);
       const updatedFavorites = favorites.filter(favorite => favorite !== word);
-      await this.saveFavorites(updatedFavorites, userId);
+      await StorageService.saveFavorites(updatedFavorites, userId);
     } catch (error) {
       console.error('Error removing favorite:', error);
     }
-  }
+  },
 
   /**
    * Check if word is in favorites
@@ -78,112 +96,112 @@ export class StorageService {
    * @param userId Optional user ID for user-specific favorites
    * @returns Promise with boolean indicating if word is in favorites
    */
-  static async isFavorite(word: string, userId?: string): Promise<boolean> {
+  isFavorite: async (word: string, userId?: string): Promise<boolean> => {
     try {
-      const favorites = await this.getFavorites(userId);
+      const favorites = await StorageService.getFavorites(userId);
       return favorites.includes(word);
     } catch (error) {
       console.error('Error checking favorite:', error);
       return false;
     }
-  }
+  },
 
   /**
    * Get history from storage
    * @param userId Optional user ID for user-specific history
    * @returns Promise with array of history words
    */
-  static async getHistory(userId?: string): Promise<string[]> {
+  getHistory: async (userId?: string): Promise<string[]> => {
     try {
-      const key = userId ? `${HISTORY_KEY}_${userId}` : HISTORY_KEY;
+      const key = userId ? `${STORAGE_KEYS.HISTORY}_${userId}` : STORAGE_KEYS.HISTORY;
       const data = await AsyncStorage.getItem(key);
       return data ? JSON.parse(data) : [];
     } catch (error) {
       console.error('Error getting history:', error);
       return [];
     }
-  }
+  },
 
   /**
    * Save history to storage
    * @param history Array of history words
    * @param userId Optional user ID for user-specific history
    */
-  static async saveHistory(history: string[], userId?: string): Promise<void> {
+  saveHistory: async (history: string[], userId?: string): Promise<void> => {
     try {
-      const key = userId ? `${HISTORY_KEY}_${userId}` : HISTORY_KEY;
+      const key = userId ? `${STORAGE_KEYS.HISTORY}_${userId}` : STORAGE_KEYS.HISTORY;
       await AsyncStorage.setItem(key, JSON.stringify(history));
     } catch (error) {
       console.error('Error saving history:', error);
     }
-  }
+  },
 
   /**
    * Add word to history
    * @param word Word to add to history
    * @param userId Optional user ID for user-specific history
    */
-  static async addToHistory(word: string, userId?: string): Promise<void> {
+  addToHistory: async (word: string, userId?: string): Promise<void> => {
     try {
-      const history = await this.getHistory(userId);
+      const history = await StorageService.getHistory(userId);
       // Remove word if it already exists to avoid duplicates
       const filteredHistory = history.filter(item => item !== word);
       // Add word to the beginning of the array
       filteredHistory.unshift(word);
       // Limit history to 100 items
       const limitedHistory = filteredHistory.slice(0, 100);
-      await this.saveHistory(limitedHistory, userId);
+      await StorageService.saveHistory(limitedHistory, userId);
     } catch (error) {
       console.error('Error adding to history:', error);
     }
-  }
+  },
 
   /**
    * Clear history
    * @param userId Optional user ID for user-specific history
    */
-  static async clearHistory(userId?: string): Promise<void> {
+  clearHistory: async (userId?: string): Promise<void> => {
     try {
-      const key = userId ? `${HISTORY_KEY}_${userId}` : HISTORY_KEY;
+      const key = userId ? `${STORAGE_KEYS.HISTORY}_${userId}` : STORAGE_KEYS.HISTORY;
       await AsyncStorage.removeItem(key);
     } catch (error) {
       console.error('Error clearing history:', error);
     }
-  }
+  },
 
   /**
    * Save user data to storage
    * @param userId User ID
    * @param email User email
    */
-  static async saveUser(userId: string, email: string): Promise<void> {
+  saveUser: async (userId: string, email: string): Promise<void> => {
     try {
-      await AsyncStorage.setItem(USER_KEY, JSON.stringify({ id: userId, email }));
+      await AsyncStorage.setItem(STORAGE_KEYS.USER, JSON.stringify({ id: userId, email }));
     } catch (error) {
       console.error('Error saving user:', error);
     }
-  }
+  },
 
   /**
    * Get user data from storage
    * @returns Promise with user data or null if not found
    */
-  static async getUser(): Promise<{ id: string; email: string } | null> {
+  getUser: async (): Promise<{ id: string; email: string } | null> => {
     try {
-      const data = await AsyncStorage.getItem(USER_KEY);
+      const data = await AsyncStorage.getItem(STORAGE_KEYS.USER);
       return data ? JSON.parse(data) : null;
     } catch (error) {
       console.error('Error getting user:', error);
       return null;
     }
-  }
+  },
 
   /**
    * Clear user data from storage
    */
-  static async clearUser(): Promise<void> {
+  clearUser: async (): Promise<void> => {
     try {
-      await AsyncStorage.removeItem(USER_KEY);
+      await AsyncStorage.removeItem(STORAGE_KEYS.USER);
     } catch (error) {
       console.error('Error clearing user:', error);
     }

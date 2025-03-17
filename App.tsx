@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -10,10 +10,26 @@ import { HistoryScreen } from "./src/screens/HistoryScreen";
 import { LoginScreen } from "./src/screens/LoginScreen";
 import { RootStackParamList } from "./src/navigation/types";
 import { theme } from "./src/theme";
+import { initI18n } from "./src/i18n";
+import { LoadingIndicator } from "./src/components/LoadingIndicator";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
+  const [isI18nInitialized, setIsI18nInitialized] = useState(false);
+
+  useEffect(() => {
+    const initialize = async () => {
+      await initI18n();
+      setIsI18nInitialized(true);
+    };
+    initialize();
+  }, []);
+
+  if (!isI18nInitialized) {
+    return <LoadingIndicator message="Loading..." />;
+  }
+
   return (
     <AppProvider>
       <NavigationContainer>

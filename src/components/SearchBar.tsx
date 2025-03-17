@@ -1,7 +1,14 @@
 import React, { useState } from "react";
-import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { theme } from "../theme";
+import { useTranslation } from "react-i18next";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -14,9 +21,10 @@ interface SearchBarProps {
  */
 export const SearchBar: React.FC<SearchBarProps> = ({
   onSearch,
-  placeholder = "Search for a word...",
+  placeholder,
   initialValue = "",
 }) => {
+  const { t } = useTranslation();
   const [query, setQuery] = useState(initialValue);
 
   const handleSearch = () => {
@@ -40,7 +48,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         />
         <TextInput
           style={styles.input}
-          placeholder={placeholder}
+          placeholder={placeholder || t("common.search")}
           placeholderTextColor={theme.colors.textSecondary}
           value={query}
           onChangeText={setQuery}

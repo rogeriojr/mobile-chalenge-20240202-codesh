@@ -14,6 +14,9 @@ import { LoadingIndicator } from "../components/LoadingIndicator";
 import { useApp } from "../contexts/AppContext";
 import { theme } from "../theme";
 import { RootStackParamList } from "../navigation/types";
+import { useTranslation } from "react-i18next";
+import i18n from "../i18n";
+import { StorageService } from "../services/storage";
 
 type FavoritesScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -33,6 +36,7 @@ export const FavoritesScreen: React.FC = () => {
     searchWord,
     isLoading,
   } = useApp();
+  const { t } = useTranslation();
 
   // Handle word selection
   const handleWordPress = (word: string) => {
@@ -49,6 +53,14 @@ export const FavoritesScreen: React.FC = () => {
     }
   };
 
+  // Toggle language
+  const toggleLanguage = async () => {
+    const currentLang = i18n.language;
+    const newLang = currentLang === "pt" ? "en" : "pt";
+    await i18n.changeLanguage(newLang);
+    await StorageService.saveLanguage(newLang);
+  };
+
   // Render empty component for FlatList
   const renderEmpty = () => {
     return (
@@ -58,22 +70,20 @@ export const FavoritesScreen: React.FC = () => {
           size={64}
           color={theme.colors.textSecondary}
         />
-        <Text style={styles.emptyText}>No favorite words yet</Text>
-        <Text style={styles.emptySubtext}>
-          Words you mark as favorites will appear here
-        </Text>
+        <Text style={styles.emptyText}>{t("favorites.noFavorites")}</Text>
+        <Text style={styles.emptySubtext}>{t("favorites.addSome")}</Text>
         <TouchableOpacity
           style={styles.button}
           onPress={() => navigation.navigate("Home")}
         >
-          <Text style={styles.buttonText}>Browse Dictionary</Text>
+          <Text style={styles.buttonText}>{t("home.title")}</Text>
         </TouchableOpacity>
       </View>
     );
   };
 
   if (isLoading) {
-    return <LoadingIndicator message="Loading favorites..." />;
+    return <LoadingIndicator message={t("common.loading")} />;
   }
 
   return (
@@ -89,8 +99,14 @@ export const FavoritesScreen: React.FC = () => {
             color={theme.colors.text}
           />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Favorites</Text>
-        <View style={styles.headerRight} />
+        <Text style={styles.headerTitle}>{t("favorites.title")}</Text>
+        <TouchableOpacity
+          style={styles.languageButton}
+          onPress={toggleLanguage}
+        >
+          <MaterialIcons name="language" size={24} color={theme.colors.info} />
+          <Text style={styles.langText}>{i18n.language.toUpperCase()}</Text>
+        </TouchableOpacity>
       </View>
 
       <FlatList
@@ -136,8 +152,15 @@ const styles = StyleSheet.create({
     marginLeft: theme.spacing.sm,
     textAlign: "center",
   },
-  headerRight: {
-    width: 40,
+  languageButton: {
+    padding: theme.spacing.xs,
+    alignItems: "center",
+  },
+  langText: {
+    fontSize: 10,
+    marginTop: 2,
+    color: theme.colors.info,
+    fontWeight: "bold",
   },
   listContent: {
     padding: theme.spacing.md,
