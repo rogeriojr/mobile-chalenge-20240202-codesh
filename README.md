@@ -29,7 +29,7 @@ A mobile application for exploring English words, their definitions, and pronunc
 
 ## Project Structure
 
-```
+```plaintext
 ├── assets/                # App icons and images
 ├── src/
 │   ├── components/        # Reusable UI components
@@ -65,19 +65,19 @@ git clone https://github.com/yourusername/english-dictionary-app.git
 cd english-dictionary-app
 ```
 
-2. Install dependencies
+1. Install dependencies
 
 ```bash
 npm install
 ```
 
-3. Start the development server
+1. Start the development server
 
 ```bash
 npm start
 ```
 
-4. Run on a device or emulator
+1. Run on a device or emulator
 
 ```bash
 # For Android
@@ -111,7 +111,7 @@ The app caches previously viewed words and their definitions for offline access.
 
 ## Challenge Description
 
-```
+```markdown
 # Mobile Challenge 20240202
 
 
