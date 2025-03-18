@@ -1,5 +1,6 @@
 export default {
   common: {
+    back: 'Back',
     loading: 'Loading...',
     error: 'Error',
     goBack: 'Go Back',

@@ -1,10 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { STORAGE_PREFIX } from 'react-native-dotenv';
 
 const STORAGE_KEYS = {
-  USER: "@dictionary:user",
-  FAVORITES: "@dictionary:favorites",
-  HISTORY: "@dictionary:history",
-  LANGUAGE: "@dictionary:language",
+  USER: `${STORAGE_PREFIX}user`,
+  FAVORITES: `${STORAGE_PREFIX}favorites`,
+  HISTORY: `${STORAGE_PREFIX}history`,
+  LANGUAGE: `${STORAGE_PREFIX}language`,
 };
 
 export const StorageService = {

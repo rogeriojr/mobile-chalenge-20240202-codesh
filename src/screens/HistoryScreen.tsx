@@ -1,12 +1,12 @@
 import React from "react";
 import {
   StyleSheet,
-  View,
   Text,
-  FlatList,
-  TouchableOpacity,
+  FlatList as RNFlatList,
   Platform,
 } from "react-native";
+import { View } from "react-native/Libraries/Components/View/View";
+import { TouchableOpacity } from "react-native/Libraries/Components/Touchable/TouchableOpacity";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -120,9 +120,9 @@ export const HistoryScreen: React.FC = () => {
         </View>
       </View>
 
-      <FlatList
+      <RNFlatList
         data={history}
-        keyExtractor={(item) => item}
+        keyExtractor={(item, index) => `${item}_${index}`}
         renderItem={({ item }) => (
           <WordCard
             word={item}

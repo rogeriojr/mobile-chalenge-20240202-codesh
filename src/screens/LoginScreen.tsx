@@ -70,20 +70,18 @@ export const LoginScreen: React.FC = () => {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
     >
+      <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+        <MaterialIcons
+          name="arrow-back"
+          size={24}
+          color={theme.colors.primary}
+        />
+        <Text style={styles.backButtonText}>{t("common.back")}</Text>
+      </TouchableOpacity>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-            <MaterialIcons
-              name="arrow-back"
-              size={24}
-              color={theme.colors.primary}
-            />
-            <Text style={styles.backButtonText}>{t("common.back")}</Text>
-          </TouchableOpacity>
-
           <MaterialIcons name="book" size={64} color={theme.colors.primary} />
           <Text style={styles.title}>{t("home.title")}</Text>
-          <Text style={styles.subtitle}>{t("login.title")}</Text>
           <TouchableOpacity
             style={styles.languageButton}
             onPress={toggleLanguage}
@@ -140,7 +138,7 @@ export const LoginScreen: React.FC = () => {
             disabled={isLoading}
           >
             <Text style={styles.buttonText}>
-              {isLoading ? "Signing in..." : "Sign In"}
+              {isLoading ? "..." : t("login.title")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -165,7 +163,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: "absolute",
-    top: 0,
+    top: 40,
     left: 0,
     flexDirection: "row",
     alignItems: "center",

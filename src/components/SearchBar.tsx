@@ -1,11 +1,7 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Platform,
-} from "react-native";
+import { StyleSheet, TextInput, Platform } from "react-native";
+import { View } from "react-native/Libraries/Components/View/View";
+import { TouchableOpacity } from "react-native/Libraries/Components/Touchable/TouchableOpacity";
 import { MaterialIcons } from "@expo/vector-icons";
 import { theme } from "../theme";
 import { useTranslation } from "react-i18next";

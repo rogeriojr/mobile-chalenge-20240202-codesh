@@ -1,11 +1,8 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, FlatList as RNFlatList } from "react-native";
+import { View } from "react-native/Libraries/Components/View/View";
+import { TouchableOpacity } from "react-native/Libraries/Components/Touchable/TouchableOpacity";
+import { ScrollView } from "react-native/Libraries/Components/ScrollView/ScrollView";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -109,9 +106,9 @@ export const FavoritesScreen: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      <FlatList
+      <RNFlatList
         data={favorites}
-        keyExtractor={(item) => item}
+        keyExtractor={(item, index) => `${item}_${index}`}
         renderItem={({ item }) => (
           <WordCard
             word={item}

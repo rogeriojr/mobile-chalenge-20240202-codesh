@@ -1,10 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// Storage key for words dictionary
-const WORDS_KEY = '@dictionary_app:words';
-
-// URL to fetch words dictionary
-const WORDS_DICTIONARY_URL = 'https://raw.githubusercontent.com/dwyl/english-words/master/words_dictionary.json';
+import { WORDS_DICTIONARY_URL, WORDS_STORAGE_KEY } from 'react-native-dotenv';
 
 /**
  * Service for handling words dictionary
@@ -90,7 +85,7 @@ export class WordsService {
    */
   private static async getWordsFromStorage(): Promise<string[] | null> {
     try {
-      const data = await AsyncStorage.getItem(WORDS_KEY);
+      const data = await AsyncStorage.getItem(WORDS_STORAGE_KEY);
       return data ? JSON.parse(data) : null;
     } catch (error) {
       console.error('Error getting words from storage:', error);
@@ -104,7 +99,7 @@ export class WordsService {
    */
   private static async saveWordsToStorage(words: string[]): Promise<void> {
     try {
-      await AsyncStorage.setItem(WORDS_KEY, JSON.stringify(words));
+      await AsyncStorage.setItem(WORDS_STORAGE_KEY, JSON.stringify(words));
     } catch (error) {
       console.error('Error saving words to storage:', error);
     }

@@ -3,11 +3,12 @@ import {
   StyleSheet,
   View,
   Text,
-  FlatList,
+  FlatList as RNFlatList,
   TouchableOpacity,
   RefreshControl,
   ActivityIndicator,
 } from "react-native";
+
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -249,9 +250,9 @@ export const HomeScreen: React.FC = () => {
         placeholder={t("common.search")}
       />
 
-      <FlatList
+      <RNFlatList
         data={filteredWords}
-        keyExtractor={(item) => item}
+        keyExtractor={(item, index) => `word_${index}`}
         renderItem={({ item }) => (
           <WordCard
             word={item}

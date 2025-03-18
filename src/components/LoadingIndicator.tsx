@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, View, ActivityIndicator, Text } from "react-native";
+import { StyleSheet, ActivityIndicator, Text } from "react-native";
+import { View } from "react-native/Libraries/Components/View/View";
 import { theme } from "../theme";
 
 interface LoadingIndicatorProps {

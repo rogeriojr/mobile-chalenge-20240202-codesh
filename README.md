@@ -1,167 +1,17 @@
-# Portuguese Version
-
-## Aplicativo de Dicionário Inglês
-
-> Um aplicativo móvel para explorar palavras em inglês, suas definições e pronúncias com favoritos e histórico de visualização.
-
-## Funcionalidades
-
-- Navegue por uma lista abrangente de palavras em inglês com rolagem infinita
-- Pesquise palavras específicas
-- Visualize definições detalhadas de palavras, fonética e exemplos
-- Ouça pronúncias de palavras
-- Salve palavras favoritas para acesso rápido
-- Acompanhe o histórico de visualização de palavras
-- Autenticação de usuário para sincronizar favoritos e histórico entre dispositivos
-
-## Capturas de Tela
-
-## Screenshots
-
-<div style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 10px;">
-  <img src="https://github.com/user-attachments/assets/2261a11e-0691-45cb-9c22-e33a7f4ac13f" width="300" />
-  <img src="https://github.com/user-attachments/assets/e25e677d-8212-4b0a-81c9-560fcef9c78d" width="300" />
-  <img src="https://github.com/user-attachments/assets/19d90a16-335e-4b0e-a9c6-74ca48ac31e7" width="300" />
-  <img src="https://github.com/user-attachments/assets/1330a9a0-2e3b-48b7-be5a-945baab4024c" width="300" />
-  <img src="https://github.com/user-attachments/assets/f1cbad72-a8c7-416f-a30f-d5163a3552ba" width="300" />
-</div>
-
-## Tecnologias Utilizadas
-
-- **React Native** - Framework de aplicativo móvel
-- **Expo** - Plataforma de desenvolvimento para React Native
-- **TypeScript** - JavaScript com tipagem segura
-- **React Navigation** - Biblioteca de navegação para React Native
-- **Expo AV** - Reprodução de áudio para pronúncias de palavras
-- **AsyncStorage** - Armazenamento local para cache e persistência
-- **Context API** - Gerenciamento de estado
-- **Free Dictionary API** - Definições e fonética de palavras
-
-## Estrutura do Projeto
-
-```plaintext
-├── assets/                # Ícones e imagens do aplicativo
-├── src/
-│   ├── components/        # Componentes de UI reutilizáveis
-│   │   ├── LoadingIndicator.tsx
-│   │   ├── SearchBar.tsx
-│   │   └── WordCard.tsx
-│   ├── contexts/          # Gerenciamento de estado da aplicação
-│   │   └── AppContext.tsx
-│   ├── navigation/        # Configuração de navegação
-│   │   └── types.ts
-│   ├── screens/           # Telas da aplicação
-│   │   ├── FavoritesScreen.tsx
-│   │   ├── HistoryScreen.tsx
-│   │   ├── HomeScreen.tsx
-│   │   ├── LoginScreen.tsx
-│   │   └── WordDetailsScreen.tsx
-│   ├── services/          # Serviços de API e dados
-│   │   ├── api.ts         # Integração com API de dicionário
-│   │   ├── storage.ts     # Gerenciamento de armazenamento local
-│   │   └── words.ts       # Gerenciamento do dicionário de palavras
-│   └── theme/             # Estilização e temas do aplicativo
-│       └── index.ts
-├── App.tsx               # Componente principal da aplicação
-└── index.ts              # Ponto de entrada
-```
-
-## Instalação
-
-1. Clone o repositório
-
-```bash
-git clone https://github.com/yourusername/english-dictionary-app.git
-cd english-dictionary-app
-```
-
-1. Instale as dependências
-
-```bash
-npm install
-```
-
-1. Inicie o servidor de desenvolvimento
-
-```bash
-npm start
-```
-
-1. Execute em um dispositivo ou emulador
-
-```bash
-# Para Android
-npm run android
-
-# Para iOS
-npm run ios
-```
-
-## Detalhes de Implementação
-
-### Dicionário de Palavras
-
-O aplicativo carrega um dicionário abrangente de palavras em inglês do repositório GitHub mencionado no desafio. O dicionário é armazenado em cache localmente para melhor desempenho.
-
-### Cache de API
-
-As definições de palavras obtidas da Free Dictionary API são armazenadas em cache localmente com uma expiração de 24 horas para reduzir chamadas de API e melhorar o desempenho do aplicativo.
-
-### Rolagem Infinita
-
-A lista de palavras implementa rolagem infinita para lidar eficientemente com o grande dicionário sem problemas de desempenho.
-
-### Autenticação de Usuário
-
-O aplicativo inclui um sistema de autenticação simples que permite aos usuários sincronizar seus favoritos e histórico entre dispositivos.
-
-### Suporte Offline
-
-O aplicativo armazena em cache palavras e suas definições visualizadas anteriormente para acesso offline.
-
----
-
-## English Dictionary App
+# English Dictionary App
 
 > A mobile application for exploring English words, their definitions, and pronunciations with favorites and history tracking.
 
 ## Table of Contents
 
+- [Overview](#overview)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Implementation Details](#implementation-details)
 - [Portuguese Version](#portuguese-version)
-  - [Aplicativo de Dicionário Inglês](#aplicativo-de-dicionário-inglês)
-  - [Funcionalidades](#funcionalidades)
-  - [Capturas de Tela](#capturas-de-tela)
-  - [Screenshots](#screenshots)
-  - [Tecnologias Utilizadas](#tecnologias-utilizadas)
-  - [Estrutura do Projeto](#estrutura-do-projeto)
-  - [Instalação](#instalação)
-  - [Detalhes de Implementação](#detalhes-de-implementação)
-    - [Dicionário de Palavras](#dicionário-de-palavras)
-    - [Cache de API](#cache-de-api)
-    - [Rolagem Infinita](#rolagem-infinita)
-    - [Autenticação de Usuário](#autenticação-de-usuário)
-    - [Suporte Offline](#suporte-offline)
-  - [English Dictionary App](#english-dictionary-app)
-  - [Table of Contents](#table-of-contents)
-  - [Overview](#overview)
-  - [Features](#features)
-  - [Screenshots](#screenshots-1)
-  - [Technologies Used](#technologies-used)
-  - [Project Structure](#project-structure)
-  - [Installation](#installation)
-  - [Implementation Details](#implementation-details)
-    - [Word Dictionary](#word-dictionary)
-    - [API Caching](#api-caching)
-    - [Infinite Scrolling](#infinite-scrolling)
-    - [User Authentication](#user-authentication)
-    - [Offline Support](#offline-support)
-  - [Original Project Challenge](#original-project-challenge)
-  - [Mobile Challenge 20240202](#mobile-challenge-20240202)
-  - [Introdução](#introdução)
-    - [Requisitos Obrigatórios](#requisitos-obrigatórios)
-    - [Diferenciais](#diferenciais)
-    - [Tecnologias Requeridas](#tecnologias-requeridas)
-    - [Organização](#organização)
+- [Original Project Challenge](#original-project-challenge)
 
 ## Overview
 
@@ -179,13 +29,7 @@ This app allows users to search for words, view their meanings, save favorites, 
 
 ## Screenshots
 
-<div style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 10px;">
-  <img src="https://github.com/user-attachments/assets/2261a11e-0691-45cb-9c22-e33a7f4ac13f" width="300" />
-  <img src="https://github.com/user-attachments/assets/e25e677d-8212-4b0a-81c9-560fcef9c78d" width="300" />
-  <img src="https://github.com/user-attachments/assets/19d90a16-335e-4b0e-a9c6-74ca48ac31e7" width="300" />
-  <img src="https://github.com/user-attachments/assets/1330a9a0-2e3b-48b7-be5a-945baab4024c" width="300" />
-  <img src="https://github.com/user-attachments/assets/f1cbad72-a8c7-416f-a30f-d5163a3552ba" width="300" />
-</div>
+<!-- Add your screenshots here -->
 
 ## Technologies Used
 
@@ -282,9 +126,124 @@ The app caches previously viewed words and their definitions for offline access.
 
 ---
 
+## Portuguese Version
+
+## Aplicativo de Dicionário Inglês
+
+> Um aplicativo móvel para explorar palavras em inglês, suas definições e pronúncias com favoritos e histórico de visualização.
+
+## Funcionalidades
+
+- Navegue por uma lista abrangente de palavras em inglês com rolagem infinita
+- Pesquise palavras específicas
+- Visualize definições detalhadas de palavras, fonética e exemplos
+- Ouça pronúncias de palavras
+- Salve palavras favoritas para acesso rápido
+- Acompanhe o histórico de visualização de palavras
+- Autenticação de usuário para sincronizar favoritos e histórico entre dispositivos
+
+## Capturas de Tela
+
+<!-- Adicione suas capturas de tela aqui -->
+
+## Tecnologias Utilizadas
+
+- **React Native** - Framework de aplicativo móvel
+- **Expo** - Plataforma de desenvolvimento para React Native
+- **TypeScript** - JavaScript com tipagem segura
+- **React Navigation** - Biblioteca de navegação para React Native
+- **Expo AV** - Reprodução de áudio para pronúncias de palavras
+- **AsyncStorage** - Armazenamento local para cache e persistência
+- **Context API** - Gerenciamento de estado
+- **Free Dictionary API** - Definições e fonética de palavras
+
+## Estrutura do Projeto
+
+```plaintext
+├── assets/                # Ícones e imagens do aplicativo
+├── src/
+│   ├── components/        # Componentes de UI reutilizáveis
+│   │   ├── LoadingIndicator.tsx
+│   │   ├── SearchBar.tsx
+│   │   └── WordCard.tsx
+│   ├── contexts/          # Gerenciamento de estado da aplicação
+│   │   └── AppContext.tsx
+│   ├── navigation/        # Configuração de navegação
+│   │   └── types.ts
+│   ├── screens/           # Telas da aplicação
+│   │   ├── FavoritesScreen.tsx
+│   │   ├── HistoryScreen.tsx
+│   │   ├── HomeScreen.tsx
+│   │   ├── LoginScreen.tsx
+│   │   └── WordDetailsScreen.tsx
+│   ├── services/          # Serviços de API e dados
+│   │   ├── api.ts         # Integração com API de dicionário
+│   │   ├── storage.ts     # Gerenciamento de armazenamento local
+│   │   └── words.ts       # Gerenciamento do dicionário de palavras
+│   └── theme/             # Estilização e temas do aplicativo
+│       └── index.ts
+├── App.tsx               # Componente principal da aplicação
+└── index.ts              # Ponto de entrada
+```
+
+## Instalação
+
+1. Clone o repositório
+
+```bash
+git clone https://github.com/yourusername/english-dictionary-app.git
+cd english-dictionary-app
+```
+
+1. Instale as dependências
+
+```bash
+npm install
+```
+
+1. Inicie o servidor de desenvolvimento
+
+```bash
+npm start
+```
+
+1. Execute em um dispositivo ou emulador
+
+```bash
+# Para Android
+npm run android
+
+# Para iOS
+npm run ios
+```
+
+## Detalhes de Implementação
+
+### Dicionário de Palavras
+
+O aplicativo carrega um dicionário abrangente de palavras em inglês do repositório GitHub mencionado no desafio. O dicionário é armazenado em cache localmente para melhor desempenho.
+
+### Cache de API
+
+As definições de palavras obtidas da Free Dictionary API são armazenadas em cache localmente com uma expiração de 24 horas para reduzir chamadas de API e melhorar o desempenho do aplicativo.
+
+### Rolagem Infinita
+
+A lista de palavras implementa rolagem infinita para lidar eficientemente com o grande dicionário sem problemas de desempenho.
+
+### Autenticação de Usuário
+
+O aplicativo inclui um sistema de autenticação simples que permite aos usuários sincronizar seus favoritos e histórico entre dispositivos.
+
+### Suporte Offline
+
+O aplicativo armazena em cache palavras e suas definições visualizadas anteriormente para acesso offline.
+
+---
+
 ## Original Project Challenge
 
-## Mobile Challenge 20240202
+# Mobile Challenge 20240202
 
 ## Introdução
 
