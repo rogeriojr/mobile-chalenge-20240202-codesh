@@ -91,6 +91,8 @@ export const LoginScreen: React.FC = () => {
     try {
       setIsLoading(true);
       await login(TEST_USER.email, TEST_USER.password);
+      // Redirect to Home screen after successful login
+      navigation.navigate("Home");
     } catch (error) {
       Alert.alert(t("common.error"), t("login.loginError"));
       console.error("Test user login error:", error);
@@ -118,14 +120,14 @@ export const LoginScreen: React.FC = () => {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
     >
-      <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+      {/* <TouchableOpacity style={styles.backButton} onPress={handleBack}>
         <MaterialIcons
           name="arrow-back"
           size={24}
           color={theme.colors.primary}
         />
         <Text style={styles.backButtonText}>{t("common.back")}</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.header}>
           <MaterialIcons name="book" size={64} color={theme.colors.primary} />

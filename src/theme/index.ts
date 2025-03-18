@@ -11,6 +11,7 @@ export const theme = {
     background: '#FFFFFF',
     surface: '#FFFFFF',
     error: '#B00020',
+    errorLight: 'transparent',
     text: '#000000',
     textSecondary: '#757575',
     disabled: '#BDBDBD',

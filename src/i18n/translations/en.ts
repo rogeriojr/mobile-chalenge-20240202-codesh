@@ -22,6 +22,10 @@ export default {
     loginError: 'Login error',
     logoutSuccess: 'Logout successful',
     logoutError: 'Logout error',
+    logoutConfirm: 'Are you sure you want to logout?',
+    confirmation: 'Confirmation',
+    yes: 'Yes',
+    no: 'No',
   },
   home: {
     title: 'English Dictionary',
@@ -64,5 +68,6 @@ export default {
     loginSuccess: 'Login successful',
     loginError: 'Login error',
     useTestUser: 'Testing the app? Use the test user!',
+    logoutConfirmation: 'Are you sure you want to logout?'
   },
 };

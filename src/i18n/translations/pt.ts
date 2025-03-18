@@ -22,6 +22,10 @@ export default {
     loginError: 'Erro ao fazer login',
     logoutSuccess: 'Logout realizado com sucesso',
     logoutError: 'Erro ao fazer logout',
+    logoutConfirm: 'Tem certeza que deseja sair?',
+    confirmation: 'Confirmação',
+    yes: 'Sim',
+    no: 'Não',
   },
   home: {
     title: 'Dicionário de Inglês',
@@ -64,5 +68,6 @@ export default {
     loginSuccess: 'Login realizado com sucesso',
     loginError: 'Erro ao fazer login',
     useTestUser: 'Está testando o app? Use o usuário teste!',
+    logoutConfirmation: 'Tem certeza que deseja sair?'
   },
 };

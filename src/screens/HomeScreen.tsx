@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   RefreshControl,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 
 import { MaterialIcons } from "@expo/vector-icons";
@@ -22,6 +23,7 @@ import { RootStackParamList } from "../navigation/types";
 import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
 import { StorageService } from "../services/storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
@@ -33,8 +35,14 @@ type HomeScreenNavigationProp = NativeStackNavigationProp<
  */
 export const HomeScreen: React.FC = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
-  const { searchWord, isFavorite, addFavorite, removeFavorite, isLoggedIn } =
-    useApp();
+  const {
+    searchWord,
+    isFavorite,
+    addFavorite,
+    removeFavorite,
+    isLoggedIn,
+    logout,
+  } = useApp();
   const { t } = useTranslation();
 
   const [words, setWords] = useState<string[]>([]);
@@ -158,9 +166,33 @@ export const HomeScreen: React.FC = () => {
     navigation.navigate("History");
   };
 
-  // Navigate to login screen
-  const navigateToLogin = () => {
-    navigation.navigate("Login");
+  // Navigate to login screen or handle logout
+  const handleAuthAction = () => {
+    if (isLoggedIn) {
+      Alert.alert(t("common.confirmation"), t("login.logoutConfirmation"), [
+        {
+          text: t("common.no"),
+          style: "cancel",
+        },
+        {
+          text: t("common.yes"),
+          onPress: async () => {
+            try {
+              await logout();
+              // Clear all storage data
+              await AsyncStorage.clear();
+              console.log("User logged out and storage cleared");
+            } catch (error) {
+              console.error("Logout error:", error);
+              Alert.alert(t("common.error"), t("login.logoutError"));
+            }
+          },
+          style: "destructive",
+        },
+      ]);
+    } else {
+      navigation.navigate("Login");
+    }
   };
 
   // Toggle language
@@ -234,11 +266,14 @@ export const HomeScreen: React.FC = () => {
               color={theme.colors.favorite}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton} onPress={navigateToLogin}>
+          <TouchableOpacity
+            style={[styles.iconButton, isLoggedIn && styles.logoutButton]}
+            onPress={handleAuthAction}
+          >
             <MaterialIcons
-              name={isLoggedIn ? "account-circle" : "login"}
+              name={isLoggedIn ? "logout" : "login"}
               size={24}
-              color={theme.colors.primary}
+              color={isLoggedIn ? theme.colors.error : theme.colors.primary}
             />
           </TouchableOpacity>
         </View>
@@ -309,6 +344,10 @@ const styles = StyleSheet.create({
   iconButton: {
     padding: theme.spacing.sm,
     marginLeft: theme.spacing.sm,
+  },
+  logoutButton: {
+    backgroundColor: theme.colors.errorLight,
+    borderRadius: 20,
   },
   listContent: {
     padding: theme.spacing.md,
