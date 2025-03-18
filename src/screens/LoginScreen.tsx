@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -17,6 +17,13 @@ import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
 import { StorageService } from "../services/storage";
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../navigation/types";
+
+type LoginScreenNavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "Login"
+>;
 
 /**
  * Login screen component
@@ -27,7 +34,13 @@ export const LoginScreen: React.FC = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
-  const navigation = useNavigation();
+  const navigation = useNavigation<LoginScreenNavigationProp>();
+
+  // Test user credentials
+  const TEST_USER = {
+    email: "teste@email.com",
+    password: "123456",
+  };
 
   const handleLogin = async () => {
     if (!email.trim()) {
@@ -49,6 +62,16 @@ export const LoginScreen: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Fill test user credentials and login automatically
+  const useTestUser = () => {
+    setEmail(TEST_USER.email);
+    setPassword(TEST_USER.password);
+    // Add a small delay before triggering login to ensure state updates
+    setTimeout(() => {
+      handleLogin();
+    }, 300);
   };
 
   // Toggle language
@@ -139,6 +162,18 @@ export const LoginScreen: React.FC = () => {
           >
             <Text style={styles.buttonText}>
               {isLoading ? "..." : t("login.title")}
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.testUserButton} onPress={useTestUser}>
+            <MaterialIcons
+              name="person"
+              size={20}
+              color={theme.colors.info}
+              style={styles.testUserIcon}
+            />
+            <Text style={styles.testUserButtonText}>
+              {t("login.useTestUser")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -236,5 +271,21 @@ const styles = StyleSheet.create({
     marginTop: 2,
     color: theme.colors.info,
     fontWeight: "bold",
+  },
+  testUserButton: {
+    marginTop: theme.spacing.lg,
+    padding: theme.spacing.sm,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  testUserButtonText: {
+    color: theme.colors.info,
+    fontSize: theme.typography.fontSize.md,
+    textDecorationLine: "underline",
+    marginLeft: theme.spacing.xs,
+  },
+  testUserIcon: {
+    marginRight: theme.spacing.xs,
   },
 });

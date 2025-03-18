@@ -1,132 +1,4 @@
-# English Dictionary App
-
-> A mobile application for exploring English words, their definitions, and pronunciations with favorites and history tracking.
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Project Structure](#project-structure)
-- [Installation](#installation)
-- [Implementation Details](#implementation-details)
-- [Portuguese Version](#portuguese-version)
-- [Original Project Challenge](#original-project-challenge)
-
-## Overview
-
-This app allows users to search for words, view their meanings, save favorites, and track viewing history. It features infinite scrolling through a comprehensive English dictionary, detailed word definitions with phonetics, and user authentication to sync data across devices.
-
-## Features
-
-- Browse a comprehensive list of English words with infinite scrolling
-- Search for specific words
-- View detailed word definitions, phonetics, and examples
-- Listen to word pronunciations
-- Save favorite words for quick access
-- Track word viewing history
-- User authentication to sync favorites and history across devices
-
-## Screenshots
-
-<!-- Add your screenshots here -->
-
-## Technologies Used
-
-- **React Native** - Mobile application framework
-- **Expo** - Development platform for React Native
-- **TypeScript** - Type-safe JavaScript
-- **React Navigation** - Navigation library for React Native
-- **Expo AV** - Audio playback for word pronunciations
-- **AsyncStorage** - Local storage for caching and persistence
-- **Context API** - State management
-- **Free Dictionary API** - Word definitions and phonetics
-
-## Project Structure
-
-```plaintext
-├── assets/                # App icons and images
-├── src/
-│   ├── components/        # Reusable UI components
-│   │   ├── LoadingIndicator.tsx
-│   │   ├── SearchBar.tsx
-│   │   └── WordCard.tsx
-│   ├── contexts/          # Application state management
-│   │   └── AppContext.tsx
-│   ├── navigation/        # Navigation configuration
-│   │   └── types.ts
-│   ├── screens/           # Application screens
-│   │   ├── FavoritesScreen.tsx
-│   │   ├── HistoryScreen.tsx
-│   │   ├── HomeScreen.tsx
-│   │   ├── LoginScreen.tsx
-│   │   └── WordDetailsScreen.tsx
-│   ├── services/          # API and data services
-│   │   ├── api.ts         # Dictionary API integration
-│   │   ├── storage.ts     # Local storage management
-│   │   └── words.ts       # Words dictionary management
-│   └── theme/             # App styling and theming
-│       └── index.ts
-├── App.tsx               # Main application component
-└── index.ts              # Entry point
-```
-
-## Installation
-
-1. Clone the repository
-
-```bash
-git clone https://github.com/yourusername/english-dictionary-app.git
-cd english-dictionary-app
-```
-
-1. Install dependencies
-
-```bash
-npm install
-```
-
-1. Start the development server
-
-```bash
-npm start
-```
-
-1. Run on a device or emulator
-
-```bash
-# For Android
-npm run android
-
-# For iOS
-npm run ios
-```
-
-## Implementation Details
-
-### Word Dictionary
-
-The app loads a comprehensive English word dictionary from the GitHub repository mentioned in the challenge. The dictionary is cached locally for improved performance.
-
-### API Caching
-
-Word definitions fetched from the Free Dictionary API are cached locally with a 24-hour expiration to reduce API calls and improve app performance.
-
-### Infinite Scrolling
-
-The word list implements infinite scrolling to efficiently handle the large dictionary without performance issues.
-
-### User Authentication
-
-The app includes a simple authentication system that allows users to sync their favorites and history across devices.
-
-### Offline Support
-
-The app caches previously viewed words and their definitions for offline access.
-
----
-
-## Portuguese Version
+# Portuguese Version
 
 ## Aplicativo de Dicionário Inglês
 
@@ -144,7 +16,13 @@ The app caches previously viewed words and their definitions for offline access.
 
 ## Capturas de Tela
 
-<!-- Adicione suas capturas de tela aqui -->
+<div style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 10px;">
+  <img src="https://github.com/user-attachments/assets/2261a11e-0691-45cb-9c22-e33a7f4ac13f" width="300" />
+  <img src="https://github.com/user-attachments/assets/e25e677d-8212-4b0a-81c9-560fcef9c78d" width="300" />
+  <img src="https://github.com/user-attachments/assets/19d90a16-335e-4b0e-a9c6-74ca48ac31e7" width="300" />
+  <img src="https://github.com/user-attachments/assets/1330a9a0-2e3b-48b7-be5a-945baab4024c" width="300" />
+  <img src="https://github.com/user-attachments/assets/f1cbad72-a8c7-416f-a30f-d5163a3552ba" width="300" />
+</div>
 
 ## Tecnologias Utilizadas
 
@@ -235,9 +113,159 @@ A lista de palavras implementa rolagem infinita para lidar eficientemente com o 
 
 O aplicativo inclui um sistema de autenticação simples que permite aos usuários sincronizar seus favoritos e histórico entre dispositivos.
 
+#### Usuário de Teste
+
+Para fins de teste, você pode usar as seguintes credenciais:
+- Email: teste@email.com
+- Senha: 123456
+
+Alternativamente, você pode clicar no botão "Está testando o app? Use o usuário teste!" na tela de login para preencher automaticamente essas credenciais.
+
 ### Suporte Offline
 
 O aplicativo armazena em cache palavras e suas definições visualizadas anteriormente para acesso offline.
+
+---
+
+# English Dictionary App
+
+> A mobile application for exploring English words, their definitions, and pronunciations with favorites and history tracking.
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Project Structure](#project-structure)
+- [Installation](#installation)
+- [Implementation Details](#implementation-details)
+- [Portuguese Version](#portuguese-version)
+- [Original Project Challenge](#original-project-challenge)
+
+## Overview
+
+This app allows users to search for words, view their meanings, save favorites, and track viewing history. It features infinite scrolling through a comprehensive English dictionary, detailed word definitions with phonetics, and user authentication to sync data across devices.
+
+## Features
+
+- Browse a comprehensive list of English words with infinite scrolling
+- Search for specific words
+- View detailed word definitions, phonetics, and examples
+- Listen to word pronunciations
+- Save favorite words for quick access
+- Track word viewing history
+- User authentication to sync favorites and history across devices
+
+## Screenshots
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 10px;">
+  <img src="https://github.com/user-attachments/assets/2261a11e-0691-45cb-9c22-e33a7f4ac13f" width="300" />
+  <img src="https://github.com/user-attachments/assets/e25e677d-8212-4b0a-81c9-560fcef9c78d" width="300" />
+  <img src="https://github.com/user-attachments/assets/19d90a16-335e-4b0e-a9c6-74ca48ac31e7" width="300" />
+  <img src="https://github.com/user-attachments/assets/1330a9a0-2e3b-48b7-be5a-945baab4024c" width="300" />
+  <img src="https://github.com/user-attachments/assets/f1cbad72-a8c7-416f-a30f-d5163a3552ba" width="300" />
+</div>
+
+## Technologies Used
+
+- **React Native** - Mobile application framework
+- **Expo** - Development platform for React Native
+- **TypeScript** - Type-safe JavaScript
+- **React Navigation** - Navigation library for React Native
+- **Expo AV** - Audio playback for word pronunciations
+- **AsyncStorage** - Local storage for caching and persistence
+- **Context API** - State management
+- **Free Dictionary API** - Word definitions and phonetics
+
+## Project Structure
+
+```plaintext
+├── assets/                # App icons and images
+├── src/
+│   ├── components/        # Reusable UI components
+│   │   ├── LoadingIndicator.tsx
+│   │   ├── SearchBar.tsx
+│   │   └── WordCard.tsx
+│   ├── contexts/          # Application state management
+│   │   └── AppContext.tsx
+│   ├── navigation/        # Navigation configuration
+│   │   └── types.ts
+│   ├── screens/           # Application screens
+│   │   ├── FavoritesScreen.tsx
+│   │   ├── HistoryScreen.tsx
+│   │   ├── HomeScreen.tsx
+│   │   ├── LoginScreen.tsx
+│   │   └── WordDetailsScreen.tsx
+│   ├── services/          # API and data services
+│   │   ├── api.ts         # Dictionary API integration
+│   │   ├── storage.ts     # Local storage management
+│   │   └── words.ts       # Words dictionary management
+│   └── theme/             # App styling and theming
+│       └── index.ts
+├── App.tsx               # Main application component
+└── index.ts              # Entry point
+```
+
+## Installation
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/yourusername/english-dictionary-app.git
+cd english-dictionary-app
+```
+
+1. Install dependencies
+
+```bash
+npm install
+```
+
+1. Start the development server
+
+```bash
+npm start
+```
+
+1. Run on a device or emulator
+
+```bash
+# For Android
+npm run android
+
+# For iOS
+npm run ios
+```
+
+## Implementation Details
+
+### Word Dictionary
+
+The app loads a comprehensive English word dictionary from the GitHub repository mentioned in the challenge. The dictionary is cached locally for improved performance.
+
+### API Caching
+
+Word definitions fetched from the Free Dictionary API are cached locally with a 24-hour expiration to reduce API calls and improve app performance.
+
+### Infinite Scrolling
+
+The word list implements infinite scrolling to efficiently handle the large dictionary without performance issues.
+
+### User Authentication
+
+The app includes a simple authentication system that allows users to sync their favorites and history across devices.
+
+#### Test User
+
+For testing purposes, you can use the following credentials:
+- Email: teste@email.com
+- Password: 123456
+
+Alternatively, you can click on the "Testing the app? Use the test user!" button on the login screen to automatically fill in these credentials.
+
+### Offline Support
+
+The app caches previously viewed words and their definitions for offline access.
 
 ---
 

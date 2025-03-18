@@ -12,21 +12,32 @@ import { RootStackParamList } from "./src/navigation/types";
 import { theme } from "./src/theme";
 import { initI18n } from "./src/i18n";
 import { LoadingIndicator } from "./src/components/LoadingIndicator";
+import { StorageService } from "./src/services/storage";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   const [isI18nInitialized, setIsI18nInitialized] = useState(false);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [initialRoute, setInitialRoute] =
+    useState<keyof RootStackParamList>("Home");
 
   useEffect(() => {
     const initialize = async () => {
       await initI18n();
       setIsI18nInitialized(true);
+
+      // Check if user is logged in
+      const user = await StorageService.getUser();
+      if (!user) {
+        setInitialRoute("Login");
+      }
+      setIsCheckingAuth(false);
     };
     initialize();
   }, []);
 
-  if (!isI18nInitialized) {
+  if (!isI18nInitialized || isCheckingAuth) {
     return <LoadingIndicator message="Loading..." />;
   }
 
@@ -35,7 +46,7 @@ export default function App() {
       <NavigationContainer>
         <StatusBar style="auto" />
         <Stack.Navigator
-          initialRouteName="Home"
+          initialRouteName={initialRoute}
           screenOptions={{
             headerShown: false,
             contentStyle: { backgroundColor: theme.colors.background },

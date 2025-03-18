@@ -85,8 +85,28 @@ export class WordsService {
    */
   private static async getWordsFromStorage(): Promise<string[] | null> {
     try {
-      const data = await AsyncStorage.getItem(WORDS_STORAGE_KEY);
-      return data ? JSON.parse(data) : null;
+      // Verificar se estamos usando o novo formato de armazenamento em chunks
+      const chunksCountStr = await AsyncStorage.getItem(`${WORDS_STORAGE_KEY}_count`);
+
+      if (chunksCountStr) {
+        // Novo formato: ler todos os chunks e combinar
+        const chunksCount = parseInt(chunksCountStr, 10);
+        let allWords: string[] = [];
+
+        for (let i = 0; i < chunksCount; i++) {
+          const chunkData = await AsyncStorage.getItem(`${WORDS_STORAGE_KEY}_${i}`);
+          if (chunkData) {
+            const chunkWords = JSON.parse(chunkData);
+            allWords = [...allWords, ...chunkWords];
+          }
+        }
+
+        return allWords.length > 0 ? allWords : null;
+      } else {
+        // Formato antigo: tentar ler tudo de uma vez (para compatibilidade)
+        const data = await AsyncStorage.getItem(WORDS_STORAGE_KEY);
+        return data ? JSON.parse(data) : null;
+      }
     } catch (error) {
       console.error('Error getting words from storage:', error);
       return null;
@@ -99,7 +119,18 @@ export class WordsService {
    */
   private static async saveWordsToStorage(words: string[]): Promise<void> {
     try {
-      await AsyncStorage.setItem(WORDS_STORAGE_KEY, JSON.stringify(words));
+      // Dividir o array de palavras em chunks menores para evitar o erro "Row too big"
+      const chunkSize = 500; // Reduced from 1000 to 500 to make chunks smaller
+      const totalChunks = Math.ceil(words.length / chunkSize);
+
+      // Salvar o número total de chunks para referência futura
+      await AsyncStorage.setItem(`${WORDS_STORAGE_KEY}_count`, String(totalChunks));
+
+      // Salvar cada chunk separadamente
+      for (let i = 0; i < totalChunks; i++) {
+        const chunk = words.slice(i * chunkSize, (i + 1) * chunkSize);
+        await AsyncStorage.setItem(`${WORDS_STORAGE_KEY}_${i}`, JSON.stringify(chunk));
+      }
     } catch (error) {
       console.error('Error saving words to storage:', error);
     }

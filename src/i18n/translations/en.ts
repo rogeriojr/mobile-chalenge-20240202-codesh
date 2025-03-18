@@ -63,5 +63,6 @@ export default {
     forgotPassword: 'Forgot your password?',
     loginSuccess: 'Login successful',
     loginError: 'Login error',
+    useTestUser: 'Testing the app? Use the test user!',
   },
 };
