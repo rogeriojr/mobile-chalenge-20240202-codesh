@@ -42,6 +42,24 @@ export const LoginScreen: React.FC = () => {
     password: "123456",
   };
 
+  useEffect(() => {
+    // Check if there's a user in storage and redirect if found
+    const checkUser = async () => {
+      const userData = await StorageService.getUser();
+      if (userData) {
+        // If user exists, login automatically
+        console.log("usuário  encontrado!");
+        try {
+          await login(userData.email, "123456"); // Using default password for auto-login
+        } catch (error) {
+          console.error("Auto-login error:", error);
+        }
+      }
+    };
+
+    checkUser();
+  }, []);
+
   const handleLogin = async () => {
     if (!email.trim()) {
       Alert.alert(t("common.error"), t("login.email"));
@@ -57,7 +75,7 @@ export const LoginScreen: React.FC = () => {
       setIsLoading(true);
       await login(email, password);
     } catch (error) {
-      Alert.alert(t("login.loginError"), t("login.loginError"));
+      Alert.alert(t("common.error"), t("login.loginError"));
       console.error("Login error:", error);
     } finally {
       setIsLoading(false);
@@ -65,13 +83,20 @@ export const LoginScreen: React.FC = () => {
   };
 
   // Fill test user credentials and login automatically
-  const useTestUser = () => {
+  const useTestUser = async () => {
     setEmail(TEST_USER.email);
     setPassword(TEST_USER.password);
-    // Add a small delay before triggering login to ensure state updates
-    setTimeout(() => {
-      handleLogin();
-    }, 300);
+
+    // Execute login directly instead of using setTimeout
+    try {
+      setIsLoading(true);
+      await login(TEST_USER.email, TEST_USER.password);
+    } catch (error) {
+      Alert.alert(t("common.error"), t("login.loginError"));
+      console.error("Test user login error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Toggle language
