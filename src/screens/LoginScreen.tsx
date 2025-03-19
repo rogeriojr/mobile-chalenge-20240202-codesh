@@ -109,25 +109,12 @@ export const LoginScreen: React.FC = () => {
     await StorageService.saveLanguage(newLang);
   };
 
-  // Handle back button press
-  const handleBack = () => {
-    navigation.goBack();
-  };
-
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
     >
-      {/* <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-        <MaterialIcons
-          name="arrow-back"
-          size={24}
-          color={theme.colors.primary}
-        />
-        <Text style={styles.backButtonText}>{t("common.back")}</Text>
-      </TouchableOpacity> */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.header}>
           <MaterialIcons name="book" size={64} color={theme.colors.primary} />
@@ -221,21 +208,9 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: "center",
+    padding: theme.spacing.xl,
+    paddingTop: Platform.OS === "ios" ? 100 : 60,
     marginBottom: theme.spacing.xxl,
-  },
-  backButton: {
-    position: "absolute",
-    top: 40,
-    left: 0,
-    flexDirection: "row",
-    alignItems: "center",
-    padding: theme.spacing.sm,
-  },
-  backButtonText: {
-    marginLeft: theme.spacing.xs,
-    color: theme.colors.primary,
-    fontSize: theme.typography.fontSize.md,
-    fontWeight: "bold",
   },
   title: {
     fontSize: theme.typography.fontSize.xxxl,

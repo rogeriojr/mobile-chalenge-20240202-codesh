@@ -5,7 +5,6 @@ import {
   FlatList as RNFlatList,
   View,
   TouchableOpacity,
-  // ScrollView, // Removendo importação não utilizada
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
