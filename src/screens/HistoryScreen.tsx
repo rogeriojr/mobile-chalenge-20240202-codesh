@@ -4,9 +4,9 @@ import {
   Text,
   FlatList as RNFlatList,
   Platform,
+  View,
+  TouchableOpacity,
 } from "react-native";
-import { View } from "react-native/Libraries/Components/View/View";
-import { TouchableOpacity } from "react-native/Libraries/Components/Touchable/TouchableOpacity";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";

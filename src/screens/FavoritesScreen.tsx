@@ -1,8 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, FlatList as RNFlatList } from "react-native";
-import { View } from "react-native/Libraries/Components/View/View";
-import { TouchableOpacity } from "react-native/Libraries/Components/Touchable/TouchableOpacity";
-import { ScrollView } from "react-native/Libraries/Components/ScrollView/ScrollView";
+import {
+  StyleSheet,
+  Text,
+  FlatList as RNFlatList,
+  View,
+  TouchableOpacity,
+  // ScrollView, // Removendo importação não utilizada
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -112,7 +116,7 @@ export const FavoritesScreen: React.FC = () => {
         renderItem={({ item }) => (
           <WordCard
             word={item}
-            onPress={handleWordPress}
+            onPress={() => handleWordPress(item)}
             isFavorite={isFavorite(item)}
             onToggleFavorite={handleToggleFavorite}
           />
@@ -189,7 +193,6 @@ const styles = StyleSheet.create({
     paddingVertical: theme.spacing.sm,
     paddingHorizontal: theme.spacing.lg,
     borderRadius: theme.borderRadius.md,
-    ...theme.shadows.small,
   },
   buttonText: {
     color: "white",
